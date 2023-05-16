@@ -1,21 +1,13 @@
+import favoriteService from "../services/favorite.service.js";
 import responseHandler from "../handlers/response.handler.js";
-import favoriteModel from "../models/favorite.model.js";
 
 const addFavorite = async (req, res) => {
   try {
-    const { user } = req;
-    const { mediaId } = req.params;
-
-    const isFavorite = await favoriteModel.findOne({ user: user.id, mediaId });
-
-    if (isFavorite) {
-      return responseHandler.ok(res, isFavorite);
-    }
-
-    const favorite = new favoriteModel({ ...req.body, user: user.id });
-
-    await favorite.save();
-
+    const favorite = await favoriteService.addFavorite(
+      req.user,
+      req.params,
+      req.body
+    );
     return responseHandler.ok(res, favorite);
   } catch (error) {
     responseHandler.error(res);
@@ -24,20 +16,7 @@ const addFavorite = async (req, res) => {
 
 const removeFavorite = async (req, res) => {
   try {
-    const { user } = req;
-    const { favoriteId } = req.params;
-
-    const favorite = await favoriteModel.findOne({
-      user: user.id,
-      _id: favoriteId,
-    });
-
-    if (!favorite) {
-      responseHandler.notfound(res);
-    }
-
-    await favorite.remove();
-
+    await favoriteService.removeFavorite(req.user, req.params);
     return responseHandler.ok(res);
   } catch (error) {
     responseHandler.error(res);
@@ -46,12 +25,7 @@ const removeFavorite = async (req, res) => {
 
 const getFavoritesOfUser = async (req, res) => {
   try {
-    const { user } = req;
-
-    const favorite = await favoriteModel
-      .find({ user: user.id })
-      .sort("-createdAt");
-
+    const favorite = await favoriteService.getFavoritesOfUser(req.user);
     return responseHandler.ok(res, favorite);
   } catch (error) {
     responseHandler.error(res);
