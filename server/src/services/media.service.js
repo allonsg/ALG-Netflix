@@ -21,8 +21,8 @@ const getGenres = async (params) => {
   return await tmdbApi.mediaGenres({ mediaType });
 };
 
-const search = async (query, params) => {
-  const { query, page } = query;
+const search = async (reqQuery, params) => {
+  const { query, page } = reqQuery;
   const { mediaType } = params;
 
   return await tmdbApi.mediaSearch({
@@ -32,8 +32,8 @@ const search = async (query, params) => {
   });
 };
 
-const getDetail = async (req, params) => {
-  const { mediaType, mediaId } = params;
+const getDetail = async (req, reqParams) => {
+  const { mediaType, mediaId } = reqParams;
 
   const params = { mediaType, mediaId };
 
