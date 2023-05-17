@@ -18,6 +18,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 import menuConfigs from "../../configs/menu.config";
 import Logo from "./Logo";
+import UserMenu from "./UserMenu";
 
 const ScrollAppBar = ({ children, window }) => {
   const { themeMode } = useSelector((state) => state.themeMode);
@@ -77,7 +78,7 @@ const Topbar = () => {
                 <Logo />
               </Box>
             </Stack>
-
+            {/* main menu */}
             <Box
               flexGrow={1}
               alignItems="center"
@@ -107,6 +108,20 @@ const Topbar = () => {
                 {themeMode === themeModes.light && <WbSunnyOutlinedIcon />}
               </IconButton>
             </Box>
+            {/* main menu */}
+            {/* user menu */}
+            <Stack spacing={3} direction="row" alignItems="center">
+              {!user && (
+                <Button
+                  variant="contained"
+                  onClick={() => dispatch(setAuthModalOpen(true))}
+                >
+                  sign in
+                </Button>
+              )}
+            </Stack>
+            {user && <UserMenu />}
+            {/* user menu */}
           </Toolbar>
         </AppBar>
       </ScrollAppBar>
