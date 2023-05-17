@@ -9,7 +9,7 @@ const PageWrapper = ({ state, children }) => {
     window.scrollTo(0, 0);
 
     dispatch(setAppState(state));
-  }, [state]);
+  }, [state, dispatch]);
 
   return <>{children}</>;
 };
