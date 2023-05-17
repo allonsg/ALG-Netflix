@@ -28,7 +28,7 @@ const GlobalLoading = () => {
           position: "fixed",
           width: "100vw",
           height: "100vh",
-          zIndex: 9999,
+          zIndex: 999,
         }}
       >
         <Toolbar />
