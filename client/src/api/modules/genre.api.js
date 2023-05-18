@@ -12,8 +12,8 @@ const genreApi = {
       );
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 };

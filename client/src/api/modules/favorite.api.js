@@ -12,8 +12,8 @@ const favoriteApi = {
       const response = await privateClient.get(favoriteEndpoints.list);
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 
@@ -28,8 +28,8 @@ const favoriteApi = {
       });
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 
@@ -40,8 +40,8 @@ const favoriteApi = {
       );
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 };

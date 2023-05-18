@@ -17,8 +17,8 @@ const userApi = {
       });
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
   signup: async ({ username, password, confirmPassword, displayName }) => {
@@ -31,8 +31,8 @@ const userApi = {
       });
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
   getInfo: async () => {
@@ -40,8 +40,8 @@ const userApi = {
       const response = await privateClient.get(userEndpoints.getInfo);
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
   passwordUpdate: async ({ password, newPassword, confirmNewPassword }) => {
@@ -53,20 +53,20 @@ const userApi = {
       });
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
   getFavorites: async ({}) => {
     try {
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
   addFavorite: async ({}) => {
     try {
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 };

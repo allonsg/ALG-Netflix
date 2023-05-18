@@ -18,8 +18,8 @@ const reviewApi = {
       });
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 
@@ -30,8 +30,8 @@ const reviewApi = {
       );
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 
@@ -40,8 +40,8 @@ const reviewApi = {
       const response = await privateClient.get(reviewEndpoints.list);
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 };
