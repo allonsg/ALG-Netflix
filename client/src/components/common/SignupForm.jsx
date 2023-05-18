@@ -40,7 +40,7 @@ const SignupForm = ({ switchAuthState }) => {
       setErrorMessage(undefined);
       setIsLoginRequest(true);
 
-      const { response, error } = await userApi.signup(values);
+      const { response, err } = await userApi.signup(values);
 
       setIsLoginRequest(false);
 
@@ -51,8 +51,8 @@ const SignupForm = ({ switchAuthState }) => {
         toast.success("Logged in successfully");
       }
 
-      if (error) {
-        setErrorMessage(error.message);
+      if (err) {
+        setErrorMessage(err.message);
       }
     },
   });

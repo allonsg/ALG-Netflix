@@ -19,8 +19,8 @@ const mediaApi = {
       );
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 
@@ -31,8 +31,8 @@ const mediaApi = {
       );
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 
@@ -43,8 +43,8 @@ const mediaApi = {
       );
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 };

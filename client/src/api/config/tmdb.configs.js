@@ -8,11 +8,11 @@ const mediaCategory = {
   top_rated: "top_rated",
 };
 
-const backdropPath = (imgEnpoint) =>
-  `https://image.tmdb.org/t/p/original${imgEnpoint}`;
+const backdropPath = (imgEndpoint) =>
+  `https://image.tmdb.org/t/p/original${imgEndpoint}`;
 
-const posetPath = (imgEnpoint) =>
-  `https://image.tmdb.org/t/p/w500${imgEnpoint}`;
+const posetPath = (imgEndpoint) =>
+  `https://image.tmdb.org/t/p/w500${imgEndpoint}`;
 
 const youtubePath = (videoId) =>
   `https://www.youtube.com/embed/${videoId}?controls=0`;

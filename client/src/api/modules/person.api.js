@@ -13,8 +13,8 @@ const personApi = {
       );
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 
@@ -25,8 +25,8 @@ const personApi = {
       );
 
       return { response };
-    } catch (error) {
-      return { error };
+    } catch (err) {
+      return { err };
     }
   },
 };
