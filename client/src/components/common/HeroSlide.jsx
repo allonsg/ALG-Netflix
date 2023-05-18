@@ -179,6 +179,7 @@ const HeroSlide = ({ mediaType, mediaCategory }) => {
                     ))}
                     {/* genres */}
                   </Stack>
+
                   {/* overview */}
                   <Typography
                     variant="body1"
@@ -187,6 +188,7 @@ const HeroSlide = ({ mediaType, mediaCategory }) => {
                     {movie.overview}
                   </Typography>
                   {/* overview */}
+
                   {/* buttons */}
                   <Button
                     variant="contained"
