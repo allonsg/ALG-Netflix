@@ -11,7 +11,7 @@ const mediaCategory = {
 const backdropPath = (imgEndpoint) =>
   `https://image.tmdb.org/t/p/original${imgEndpoint}`;
 
-const posetPath = (imgEndpoint) =>
+const posterPath = (imgEndpoint) =>
   `https://image.tmdb.org/t/p/w500${imgEndpoint}`;
 
 const youtubePath = (videoId) =>
@@ -21,7 +21,7 @@ const tbdmConfigs = {
   mediaType,
   mediaCategory,
   backdropPath,
-  posetPath,
+  posterPath,
   youtubePath,
 };
 
