@@ -1,4 +1,5 @@
 import favoriteModel from "../models/favorite.model.js";
+import errors from "../helpers/errors.js";
 
 const addFavorite = async (user, params, body) => {
   const { mediaId } = params;
@@ -23,7 +24,7 @@ const removeFavorite = async (user, params) => {
   });
 
   if (!favorite) {
-    throw new Error("Favorite not found");
+    throw new errors.NotFoundError("Favorite not found");
   }
 
   await favorite.remove();

@@ -6,7 +6,7 @@ const personDetail = async (req, res) => {
     const person = await personService.getPersonDetail(req.params);
     return responseHandler.ok(res, person);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
@@ -15,7 +15,7 @@ const personMedias = async (req, res) => {
     const medias = await personService.getPersonMedias(req.params);
     return responseHandler.ok(res, medias);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 

@@ -1,4 +1,5 @@
 import reviewModel from "../models/review.model.js";
+import errors from "../helpers/errors.js";
 
 const createReview = async (req) => {
   const { movieId } = req.params;
@@ -23,7 +24,7 @@ const removeReview = async (req) => {
   });
 
   if (!review) {
-    throw new Error("Review not found");
+    throw new errors.NotFoundError("Review not found");
   }
 
   await review.remove();

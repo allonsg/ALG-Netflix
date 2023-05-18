@@ -6,7 +6,7 @@ const signup = async (req, res) => {
     const user = await userService.signup(req.body);
     responseHandler.created(res, user);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
@@ -15,7 +15,7 @@ const signin = async (req, res) => {
     const user = await userService.signin(req.body);
     responseHandler.created(res, user);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
@@ -24,7 +24,7 @@ const updatePassword = async (req, res) => {
     await userService.updatePassword(req);
     responseHandler.ok(res);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
@@ -33,7 +33,7 @@ const getInfo = async (req, res) => {
     const user = await userService.getUserInfo(req.user.id);
     responseHandler.ok(res, user);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 

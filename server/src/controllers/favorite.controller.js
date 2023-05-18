@@ -10,7 +10,7 @@ const addFavorite = async (req, res) => {
     );
     return responseHandler.ok(res, favorite);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
@@ -19,7 +19,7 @@ const removeFavorite = async (req, res) => {
     await favoriteService.removeFavorite(req.user, req.params);
     return responseHandler.ok(res);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
@@ -28,7 +28,7 @@ const getFavoritesOfUser = async (req, res) => {
     const favorite = await favoriteService.getFavoritesOfUser(req.user);
     return responseHandler.ok(res, favorite);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
