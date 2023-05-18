@@ -1,5 +1,6 @@
 import jsonwebtoken from "jsonwebtoken";
 import userModel from "../models/user.model.js";
+import errors from "../helpers/errors.js";
 
 const signup = async (body) => {
   const { username, password, displayName } = body;
@@ -7,7 +8,7 @@ const signup = async (body) => {
   const checkUser = await userModel.findOne({ username });
 
   if (checkUser) {
-    throw new Error("username already used");
+    throw new errors.ConflictError("username already used");
   }
 
   const user = new userModel();
@@ -33,11 +34,11 @@ const signin = async (body) => {
     .select("username password salt id password displayName");
 
   if (!user) {
-    throw new Error("User not exist");
+    throw new errors.NotFoundError("User not exist");
   }
 
   if (!user.validPassword(password)) {
-    throw new Error("Invalid password");
+    throw new errors.NotAuthorizedError("Invalid password");
   }
 
   const token = jsonwebtoken.sign({ data: user.id }, process.env.TOKEN_SECRET, {
@@ -56,11 +57,11 @@ const updatePassword = async (req) => {
   const user = await userModel.findById(req.user.id).select("password id salt");
 
   if (!user) {
-    throw new Error("Unauthorized");
+    throw new errors.NotAuthorizedError("Unauthorized");
   }
 
   if (!user.validPassword(password)) {
-    throw new Error("Invalid password");
+    throw new errors.NotAuthorizedError("Invalid password");
   }
 
   user.setPassword(newPassword);
@@ -72,7 +73,7 @@ const getUserInfo = async (userId) => {
   const user = await userModel.findById(userId);
 
   if (!user) {
-    throw new Error("User not found");
+    throw new errors.NotFoundError("User not found");
   }
 
   return user;

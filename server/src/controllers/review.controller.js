@@ -6,7 +6,7 @@ const create = async (req, res) => {
     const review = await reviewService.createReview(req);
     return responseHandler.created(res, review);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
@@ -15,7 +15,7 @@ const remove = async (req, res) => {
     await reviewService.removeReview(req);
     return responseHandler.ok(res);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
@@ -24,7 +24,7 @@ const getReviewsOfUser = async (req, res) => {
     const reviews = await reviewService.getUserReviews(req);
     return responseHandler.ok(res, reviews);
   } catch (error) {
-    responseHandler.error(res);
+    responseHandler.error(res, error);
   }
 };
 
