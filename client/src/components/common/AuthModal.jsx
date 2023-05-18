@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthModalOpen } from "../../redux/features/authModalSlice";
 import Logo from "./Logo";
+import SigninForm from "./SigninForm";
+import SignupForm from "./SignupForm";
 
 const actionState = {
-  singin: "signin",
+  signin: "signin",
   signup: "signup",
 };
 
@@ -14,10 +16,10 @@ const AuthModal = () => {
 
   const dispatch = useDispatch();
 
-  const [action, setAction] = useState(actionState.singin);
+  const [action, setAction] = useState(actionState.signin);
 
   useEffect(() => {
-    if (authModalOpen) setAction(actionState.singin);
+    if (authModalOpen) setAction(actionState.signin);
   }, [authModalOpen]);
 
   const handleClose = () => dispatch(setAuthModalOpen(false));
@@ -48,6 +50,16 @@ const AuthModal = () => {
           <Box sx={{ textAlign: "center", marginBottom: "2rem" }}>
             <Logo />
           </Box>
+          {action === actionState.signin && (
+            <SigninForm
+              switchAuthState={() => switchAuthModal(actionState.signup)}
+            />
+          )}
+          {action === actionState.signup && (
+            <SignupForm
+              switchAuthState={() => switchAuthModal(actionState.signin)}
+            />
+          )}
         </Box>
       </Box>
     </Modal>
