@@ -1,6 +1,7 @@
 import jsonwebtoken from "jsonwebtoken";
 import responseHandler from "../handlers/response.handler.js";
 import userModel from "../models/user.model.js";
+import errors from "../helpers/errors.js";
 
 const tokenDecode = (req) => {
   try {
@@ -17,18 +18,26 @@ const tokenDecode = (req) => {
   }
 };
 
-const auth = async (res, req, next) => {
-  const tokenDecoded = tokenDecode(req);
+const auth = async (req, res, next) => {
+  try {
+    const tokenDecoded = tokenDecode(req);
 
-  if (!tokenDecoded) return responseHandler.unauthorized(res);
+    if (!tokenDecoded) {
+      throw new errors.NotAuthorizedError("Invalid token");
+    }
 
-  const user = await userModel.findById(tokenDecode.data);
+    const user = await userModel.findById(tokenDecoded.data);
 
-  if (!user) return responseHandler.unauthorized(res);
+    if (!user) {
+      throw new errors.NotFoundError("User not found");
+    }
 
-  req.user = user;
+    req.user = user;
 
-  next();
+    next();
+  } catch (error) {
+    responseHandler.error(res, error);
+  }
 };
 
 export default { auth, tokenDecode };
