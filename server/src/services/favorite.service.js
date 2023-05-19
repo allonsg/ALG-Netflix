@@ -27,7 +27,7 @@ const removeFavorite = async (user, params) => {
     throw new errors.NotFoundError("Favorite not found");
   }
 
-  await favorite.remove();
+  await favoriteModel.deleteOne({ _id: favoriteId });
 };
 
 const getFavoritesOfUser = async (user) => {

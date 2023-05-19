@@ -62,6 +62,67 @@ const MediaDetail = () => {
     getMedia();
   }, [mediaType, mediaId, dispatch]);
 
+  const onFavoriteClick = async () => {
+    if (!user) dispatch(setAuthModalOpen(true));
+
+    if (onRequest) return;
+
+    if (isFavorite) {
+      onRemoveFavorite();
+      return;
+    }
+
+    setOnRequest(true);
+
+    const body = {
+      mediaId: media.id,
+      mediaTitle: media.title || media.name,
+      mediaType: mediaType,
+      mediaPoster: media.poster_path,
+      mediaRate: media.vote_average,
+    };
+
+    const { response, err } = await favoriteApi.add(body);
+
+    setOnRequest(false);
+
+    if (err) {
+      toast.error(err.message);
+    }
+
+    if (response) {
+      dispatch(addFavorite(response));
+      setIsFavorite(true);
+      toast.success("Add favorite success");
+    }
+  };
+
+  const onRemoveFavorite = async () => {
+    if (onRequest) return;
+
+    setOnRequest(true);
+
+    const favorite = listFavorites.find(
+      (el) => el.mediaId.toString() === media.id.toString()
+    );
+
+    const { response, err } = await favoriteApi.remove({
+      favoriteId: favorite.id,
+    });
+
+    setOnRequest(false);
+
+    if (err) {
+      toast.error(err.message);
+    }
+
+    if (response) {
+      dispatch(removeFavorite(favorite));
+      setIsFavorite(false);
+      toast.success("Remove favorite success");
+    }
+  };
+
   return media ? (
     <>
       <ImageHeader
@@ -116,11 +177,10 @@ const MediaDetail = () => {
                   vatiant="h4"
                   fontWeight="700"
                   sx={{ ...uiConfigs.style.typoLines(2, "left") }}
-                >{`${media.title || media.name} ${
-                  mediaType === tmdbConfigs.mediaType.movie
-                    ? media.release_date.split("-")[0]
-                    : media.first_air_date.split("-")[0]
-                }`}</Typography>
+                >{`${media.title || media.name} ${mediaType === tmdbConfigs.mediaType.movie
+                  ? media.release_date.split("-")[0]
+                  : media.first_air_date.split("-")[0]
+                  }`}</Typography>
                 {/* title */}
 
                 {/* rate and genres */}
@@ -169,7 +229,7 @@ const MediaDetail = () => {
                     }
                     loadingPosition="start"
                     loading={onRequest}
-                    // onClick={}
+                    onClick={onFavoriteClick}
                   />
                   <Button
                     variant="contained"
