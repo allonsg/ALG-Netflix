@@ -27,7 +27,7 @@ const removeReview = async (req) => {
     throw new errors.NotFoundError("Review not found");
   }
 
-  await review.remove();
+  await review.deleteOne({ _id: reviewId });
 };
 
 const getUserReviews = async (req) => {
