@@ -12,6 +12,13 @@ import { toast } from "react-toastify";
 import CircularRate from "../components/common/CircularRate";
 import Container from "../components/common/Container";
 import ImageHeader from "../components/common/ImageHeader";
+import CastSlide from "../components/common/CastSlide";
+import MediaVideosSlide from "../components/common/MediaVideosSlide";
+import BackdropSlide from "../components/common/BackdropSlide";
+import PosterSlide from "../components/common/PosterSlide";
+import RecommendSlide from "../components/common/RecommendSlide";
+import MediaSlide from "../components/common/MediaSlide";
+import MediaReview from "../components/common/MediaReview";
 
 import uiConfigs from "../configs/ui.config";
 import tmdbConfigs from "../api/config/tmdb.configs";
@@ -21,10 +28,6 @@ import favoriteApi from "../api/modules/favorite.api";
 import { setGlobalLoading } from "../redux/features/globalLoadingSlice";
 import { setAuthModalOpen } from "../redux/features/authModalSlice";
 import { addFavorite, removeFavorite } from "../redux/features/userSlice";
-import CastSlide from "../components/common/CastSlide";
-import MediaVideosSlide from "../components/common/MediaVideosSlide";
-import BackdropSlide from "../components/common/BackdropSlide";
-import PosterSlide from "../components/common/PosterSlide";
 
 const MediaDetail = () => {
   const { mediaType, mediaId } = useParams();
@@ -180,10 +183,11 @@ const MediaDetail = () => {
                   vatiant="h4"
                   fontWeight="700"
                   sx={{ ...uiConfigs.style.typoLines(2, "left") }}
-                >{`${media.title || media.name} ${mediaType === tmdbConfigs.mediaType.movie
-                  ? media.release_date.split("-")[0]
-                  : media.first_air_date.split("-")[0]
-                  }`}</Typography>
+                >{`${media.title || media.name} ${
+                  mediaType === tmdbConfigs.mediaType.movie
+                    ? media.release_date.split("-")[0]
+                    : media.first_air_date.split("-")[0]
+                }`}</Typography>
                 {/* title */}
 
                 {/* rate and genres */}
@@ -280,7 +284,33 @@ const MediaDetail = () => {
           </Container>
         )}
         {/* media posters */}
-      </Box >
+
+        {/* media reviews */}
+        <MediaReview
+          reviews={media.reviews}
+          media={media}
+          mediaType={mediaType}
+        />
+        {/* media reviews */}
+
+        {/* media recommendations */}
+        <Container header="you may also like">
+          {media.recommend.results.length > 0 && (
+            <RecommendSlide
+              medias={media.recommend.results}
+              mediaType={mediaType}
+            />
+          )}
+
+          {media.recommend.results.length === 0 && (
+            <MediaSlide
+              mediaType={mediaType}
+              mediaCategory={tmdbConfigs.mediaCategory.top_rated}
+            />
+          )}
+        </Container>
+        {/* media recommendations */}
+      </Box>
     </>
   ) : null;
 };
