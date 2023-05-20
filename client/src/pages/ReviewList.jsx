@@ -34,6 +34,8 @@ const ReviewItem = ({ review, onRemoved }) => {
     }
   };
 
+  const linkTo = routesGen.mediaDetail(review.mediaType, review.mediaId);
+
   return (
     <Box
       sx={{
@@ -46,10 +48,7 @@ const ReviewItem = ({ review, onRemoved }) => {
       }}
     >
       <Box sx={{ width: { xs: 0, md: "10%" } }}>
-        <Link
-          to={routesGen.mediaDetail(review.mediaType, review.mediaid)}
-          style={{ color: "unset", textDecoration: "none" }}
-        >
+        <Link style={{ color: "unset", textDecoration: "none" }} to={linkTo}>
           <Box
             sx={{
               paddingTop: "160%",
@@ -68,10 +67,7 @@ const ReviewItem = ({ review, onRemoved }) => {
         }}
       >
         <Stack spacing={1}>
-          <Link
-            to={routesGen.mediaDetail(review.mediaType, review.mediaid)}
-            style={{ color: "unset", textDecoration: "none" }}
-          >
+          <Link to={linkTo} style={{ color: "unset", textDecoration: "none" }}>
             <Typography
               variant="h6"
               sx={{ ...uiConfigs.style.typoLines(1, "left") }}

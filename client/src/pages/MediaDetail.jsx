@@ -199,11 +199,10 @@ const MediaDetail = () => {
                   fontWeight="700"
                   sx={{ ...uiConfigs.style.typoLines(2, "left") }}
                 >
-                  {`${media.title || media.name} ${
-                    mediaType === tmdbConfigs.mediaType.movie
-                      ? media.release_date.split("-")[0]
-                      : media.first_air_date.split("-")[0]
-                  }`}
+                  {`${media.title || media.name} ${mediaType === tmdbConfigs.mediaType.movie
+                    ? media.release_date.split("-")[0]
+                    : media.first_air_date.split("-")[0]
+                    }`}
                 </Typography>
                 {/* title */}
 
