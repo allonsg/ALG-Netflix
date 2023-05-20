@@ -29,6 +29,7 @@ const PasswordUpdate = () => {
         .min(8, "password minimum 8 characters")
         .required("password is required"),
       newPassword: Yup.string()
+        .notOneOf([Yup.ref("password")], "New password can't be the same as old password")
         .min(8, "newPassword minimum 8 characters")
         .required("newPassword is required"),
       confirmNewPassword: Yup.string()
