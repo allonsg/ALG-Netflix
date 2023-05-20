@@ -19,7 +19,6 @@ const removeFavorite = async (req, res) => {
     await favoriteService.removeFavorite(req.user, req.params);
     return responseHandler.ok(res);
   } catch (error) {
-    console.log({ error });
     responseHandler.error(res, error);
   }
 };
