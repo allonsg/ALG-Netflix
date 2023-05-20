@@ -70,8 +70,17 @@ const MediaDetail = () => {
     getMedia();
   }, [mediaType, mediaId, dispatch]);
 
+  useEffect(() => {
+    if (!user) {
+      setIsFavorite(false);
+    }
+  }, [user]);
+
   const onFavoriteClick = async () => {
-    if (!user) dispatch(setAuthModalOpen(true));
+    if (!user) {
+      dispatch(setAuthModalOpen(true));
+      return;
+    }
 
     if (onRequest) return;
 
