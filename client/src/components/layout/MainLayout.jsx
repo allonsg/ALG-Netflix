@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import GlobalLoading from "../common/GlobalLoading";
 import Footer from "../common/Footer";
+import GlobalLoading from "../common/GlobalLoading";
 import Topbar from "../common/Topbar";
 import AuthModal from "../common/AuthModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,13 +20,8 @@ const MainLayout = () => {
     const authUser = async () => {
       const { response, err } = await userApi.getInfo();
 
-      if (response) {
-        dispatch(setUser(response));
-      }
-
-      if (err) {
-        dispatch(setUser(null));
-      }
+      if (response) dispatch(setUser(response));
+      if (err) dispatch(setUser(null));
     };
 
     authUser();
@@ -36,21 +31,12 @@ const MainLayout = () => {
     const getFavorites = async () => {
       const { response, err } = await favoriteApi.getList();
 
-      if (response) {
-        dispatch(setListFavorites(response));
-      }
-
-      if (err) {
-        toast.error(err.message);
-      }
+      if (response) dispatch(setListFavorites(response));
+      if (err) toast.error(err.message);
     };
 
-    if (user) {
-      getFavorites();
-    }
-    if (!user) {
-      dispatch(setListFavorites([]));
-    }
+    if (user) getFavorites();
+    if (!user) dispatch(setListFavorites([]));
   }, [user, dispatch]);
 
   return (
@@ -62,15 +48,22 @@ const MainLayout = () => {
       {/* login modal */}
       <AuthModal />
       {/* login modal */}
+
       <Box display="flex" minHeight="100vh">
         {/* header */}
         <Topbar />
         {/* header */}
+
+        {/* main */}
         <Box component="main" flexGrow={1} overflow="hidden" minHeight="100vh">
           <Outlet />
         </Box>
+        {/* main */}
       </Box>
+
+      {/* footer */}
       <Footer />
+      {/* footer */}
     </>
   );
 };
