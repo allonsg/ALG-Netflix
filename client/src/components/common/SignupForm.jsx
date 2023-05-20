@@ -33,6 +33,7 @@ const SignupForm = ({ switchAuthState }) => {
         .min(8, "displayName must be at least 8 characters")
         .required("displayName is required"),
       confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password")], "confirmNewPassword not match")
         .min(8, "confirmPassword must be at least 8 characters")
         .required("confirmPassword is required"),
     }),
