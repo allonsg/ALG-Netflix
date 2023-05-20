@@ -44,6 +44,8 @@ const MediaDetail = () => {
   const videoRef = useRef(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const getMedia = async () => {
       dispatch(setGlobalLoading(true));
 
@@ -180,7 +182,7 @@ const MediaDetail = () => {
               <Stack spacing={5}>
                 {/* title */}
                 <Typography
-                  vatiant="h4"
+                  variant="h4"
                   fontWeight="700"
                   sx={{ ...uiConfigs.style.typoLines(2, "left") }}
                 >{`${media.title || media.name} ${
