@@ -8,7 +8,6 @@ const createReview = async (req) => {
 
   await review.save();
 
-  console.log(111111, ...review._doc);
   return {
     ...review._doc,
     id: review.id,
