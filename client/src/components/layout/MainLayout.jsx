@@ -20,8 +20,12 @@ const MainLayout = () => {
     const authUser = async () => {
       const { response, err } = await userApi.getInfo();
 
-      if (response) dispatch(setUser(response));
-      if (err) dispatch(setUser(null));
+      if (response) {
+        dispatch(setUser(response));
+      }
+      if (err) {
+        dispatch(setUser(null));
+      }
     };
 
     authUser();
@@ -31,12 +35,20 @@ const MainLayout = () => {
     const getFavorites = async () => {
       const { response, err } = await favoriteApi.getList();
 
-      if (response) dispatch(setListFavorites(response));
-      if (err) toast.error(err.message);
+      if (response) {
+        dispatch(setListFavorites(response));
+      }
+      if (err) {
+        toast.error(err.message);
+      }
     };
 
-    if (user) getFavorites();
-    if (!user) dispatch(setListFavorites([]));
+    if (user) {
+      getFavorites();
+    }
+    if (!user) {
+      dispatch(setListFavorites([]));
+    }
   }, [user, dispatch]);
 
   return (

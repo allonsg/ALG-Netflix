@@ -4,7 +4,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,13 +12,6 @@ import { toast } from "react-toastify";
 import CircularRate from "../components/common/CircularRate";
 import Container from "../components/common/Container";
 import ImageHeader from "../components/common/ImageHeader";
-import CastSlide from "../components/common/CastSlide";
-import MediaVideosSlide from "../components/common/MediaVideosSlide";
-import BackdropSlide from "../components/common/BackdropSlide";
-import PosterSlide from "../components/common/PosterSlide";
-import RecommendSlide from "../components/common/RecommendSlide";
-import MediaSlide from "../components/common/MediaSlide";
-import MediaReview from "../components/common/MediaReview";
 
 import uiConfigs from "../configs/ui.config";
 import tmdbConfigs from "../api/config/tmdb.configs";
@@ -28,6 +21,14 @@ import favoriteApi from "../api/modules/favorite.api";
 import { setGlobalLoading } from "../redux/features/globalLoadingSlice";
 import { setAuthModalOpen } from "../redux/features/authModalSlice";
 import { addFavorite, removeFavorite } from "../redux/features/userSlice";
+
+import CastSlide from "../components/common/CastSlide";
+import MediaVideosSlide from "../components/common/MediaVideosSlide";
+import BackdropSlide from "../components/common/BackdropSlide";
+import PosterSlide from "../components/common/PosterSlide";
+import RecommendSlide from "../components/common/RecommendSlide";
+import MediaSlide from "../components/common/MediaSlide";
+import MediaReview from "../components/common/MediaReview";
 
 const MediaDetail = () => {
   const { mediaType, mediaId } = useParams();
@@ -67,14 +68,12 @@ const MediaDetail = () => {
       }
     };
 
-    getMedia();
-  }, [mediaType, mediaId, dispatch]);
-
-  useEffect(() => {
     if (!user) {
-      setIsFavorite(false);
+      getMedia();
+    } else {
+      getMedia();
     }
-  }, [user]);
+  }, [mediaType, mediaId, dispatch, user]);
 
   const onFavoriteClick = async () => {
     if (!user) {
@@ -120,7 +119,7 @@ const MediaDetail = () => {
     setOnRequest(true);
 
     const favorite = listFavorites.find(
-      (el) => el.mediaId.toString() === media.id.toString()
+      (e) => e.mediaId.toString() === media.id.toString()
     );
 
     const { response, err } = await favoriteApi.remove({
@@ -160,7 +159,10 @@ const MediaDetail = () => {
           }}
         >
           <Box
-            sx={{ display: "flex", flexDirection: { md: "row", xs: "column" } }}
+            sx={{
+              display: "flex",
+              flexDirection: { md: "row", xs: "column" },
+            }}
           >
             {/* poster */}
             <Box
@@ -178,13 +180,14 @@ const MediaDetail = () => {
                     )
                   ),
                 }}
-              ></Box>
+              />
             </Box>
             {/* poster */}
+
             {/* media info */}
             <Box
               sx={{
-                wsith: { xs: "100%", md: "60%" },
+                width: { xs: "100%", md: "60%" },
                 color: "text.primary",
               }}
             >
@@ -192,13 +195,16 @@ const MediaDetail = () => {
                 {/* title */}
                 <Typography
                   variant="h4"
+                  fontSize={{ xs: "2rem", md: "2rem", lg: "4rem" }}
                   fontWeight="700"
                   sx={{ ...uiConfigs.style.typoLines(2, "left") }}
-                >{`${media.title || media.name} ${
-                  mediaType === tmdbConfigs.mediaType.movie
-                    ? media.release_date.split("-")[0]
-                    : media.first_air_date.split("-")[0]
-                }`}</Typography>
+                >
+                  {`${media.title || media.name} ${
+                    mediaType === tmdbConfigs.mediaType.movie
+                      ? media.release_date.split("-")[0]
+                      : media.first_air_date.split("-")[0]
+                  }`}
+                </Typography>
                 {/* title */}
 
                 {/* rate and genres */}
@@ -210,10 +216,10 @@ const MediaDetail = () => {
                   {/* genres */}
                   {genres.map((genre, index) => (
                     <Chip
-                      key={index}
                       label={genre.name}
                       variant="filled"
                       color="primary"
+                      key={index}
                     />
                   ))}
                   {/* genres */}
@@ -230,12 +236,12 @@ const MediaDetail = () => {
                 {/* overview */}
 
                 {/* buttons */}
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={1}>
                   <LoadingButton
                     variant="text"
                     sx={{
                       width: "max-content",
-                      "& .MuiButton-starIcon": { marginRight: "0" },
+                      "& .MuiButon-starIcon": { marginRight: "0" },
                     }}
                     size="large"
                     startIcon={
@@ -262,7 +268,7 @@ const MediaDetail = () => {
                 {/* buttons */}
 
                 {/* cast */}
-                <Container header="cast">
+                <Container header="Cast">
                   <CastSlide casts={media.credits.cast} />
                 </Container>
                 {/* cast */}
@@ -272,6 +278,7 @@ const MediaDetail = () => {
           </Box>
         </Box>
         {/* media content */}
+
         {/* media videos */}
         <div ref={videoRef} style={{ paddingTop: "2rem" }}>
           <Container header="Videos">
@@ -304,7 +311,7 @@ const MediaDetail = () => {
         />
         {/* media reviews */}
 
-        {/* media recommendations */}
+        {/* media recommendation */}
         <Container header="you may also like">
           {media.recommend.results.length > 0 && (
             <RecommendSlide
@@ -312,7 +319,6 @@ const MediaDetail = () => {
               mediaType={mediaType}
             />
           )}
-
           {media.recommend.results.length === 0 && (
             <MediaSlide
               mediaType={mediaType}
@@ -320,7 +326,7 @@ const MediaDetail = () => {
             />
           )}
         </Container>
-        {/* media recommendations */}
+        {/* media recommendation */}
       </Box>
     </>
   ) : null;

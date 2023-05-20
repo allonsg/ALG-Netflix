@@ -4,19 +4,19 @@ import { useEffect, useState } from "react";
 import Logo from "./Logo";
 
 const GlobalLoading = () => {
-  const { globalLodaing } = useSelector((state) => state.globalLoading);
+  const { globalLoading } = useSelector((state) => state.globalLoading);
 
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (globalLodaing) {
+    if (globalLoading) {
       setIsLoading(true);
     } else {
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
     }
-  }, [globalLodaing]);
+  }, [globalLoading]);
 
   return (
     <>
@@ -24,7 +24,7 @@ const GlobalLoading = () => {
         sx={{
           opacity: isLoading ? 1 : 0,
           pointerEvents: "none",
-          transition: "all 0.3s ease",
+          transition: "all .3s ease",
           position: "fixed",
           width: "100vw",
           height: "100vh",
