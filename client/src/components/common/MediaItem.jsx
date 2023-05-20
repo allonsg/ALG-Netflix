@@ -2,12 +2,12 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CircularRate from "./CircularRate";
 import tmdbConfigs from "../../api/config/tmdb.configs";
 import uiConfigs from "../../configs/ui.config";
 import { routesGen } from "../../routes/routes";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import CircularRate from "./CircularRate";
-import { useSelector } from "react-redux";
 import favoriteUtils from "../../utils/favorite.utils";
 
 const MediaItem = ({ media, mediaType }) => {
@@ -24,9 +24,9 @@ const MediaItem = ({ media, mediaType }) => {
     setPosterPath(
       tmdbConfigs.posterPath(
         media.poster_path ||
-          media.backdrop_path ||
-          media.mediaPoster ||
-          media.profile_path
+        media.backdrop_path ||
+        media.mediaPoster ||
+        media.profile_path
       )
     );
 
@@ -41,12 +41,14 @@ const MediaItem = ({ media, mediaType }) => {
     setRate(media.vote_average || media.mediaRate);
   }, [media, mediaType]);
 
+  const isPeopleType = mediaType === "people";
+
   return (
     <Link
       to={
-        mediaType !== "people"
-          ? routesGen.mediaDetail(mediaType, media.mediaId || media.id)
-          : routesGen.person(media.id)
+        isPeopleType
+          ? routesGen.person(media.id)
+          : routesGen.mediaDetail(mediaType, media.mediaId || media.id)
       }
     >
       <Box
@@ -59,7 +61,7 @@ const MediaItem = ({ media, mediaType }) => {
         }}
       >
         {/* movie or tv item */}
-        {mediaType !== "people" && (
+        {!isPeopleType && (
           <>
             {favoriteUtils.check({ listFavorites, mediaId: media.id }) && (
               <FavoriteIcon
@@ -136,7 +138,7 @@ const MediaItem = ({ media, mediaType }) => {
         {/* movie or tv item */}
 
         {/* people */}
-        {mediaType === "people" && (
+        {isPeopleType && (
           <Box
             sx={{
               position: "absolute",

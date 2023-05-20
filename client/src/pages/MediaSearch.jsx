@@ -7,7 +7,6 @@ import MediaGrid from "../components/common/MediaGrid";
 import uiConfigs from "../configs/ui.config";
 
 const mediaTypes = ["movie", "tv", "people"];
-let timer;
 const timeout = 500;
 
 const MediaSearch = () => {
@@ -30,8 +29,11 @@ const MediaSearch = () => {
 
     if (err) toast.error(err.message);
     if (response) {
-      if (page > 1) setMedias((m) => [...m, ...response.results]);
-      else setMedias([...response.results]);
+      if (page > 1) {
+        setMedias((m) => [...m, ...response.results]);
+      } else {
+        setMedias([...response.results]);
+      }
     }
   }, [mediaType, query, page]);
 
@@ -39,7 +41,9 @@ const MediaSearch = () => {
     if (query.trim().length === 0) {
       setMedias([]);
       setPage(1);
-    } else search();
+    } else {
+      search();
+    }
   }, [search, query, mediaType, page]);
 
   useEffect(() => {
@@ -51,12 +55,14 @@ const MediaSearch = () => {
 
   const onQueryChange = (e) => {
     const newQuery = e.target.value;
-    clearTimeout(timer);
+    clearTimeout(timeout);
 
-    timer = setTimeout(() => {
+    timeout = setTimeout(() => {
       setQuery(newQuery);
     }, timeout);
   };
+
+  const onLoadMore = () => setPage((prevPage) => prevPage + 1);
 
   return (
     <>
@@ -88,7 +94,7 @@ const MediaSearch = () => {
           </Stack>
           <TextField
             color="success"
-            placeholder="Search ALG_Netflix"
+            placeholder="Search ALG_NETFLIX"
             sx={{ width: "100%" }}
             autoFocus
             onChange={onQueryChange}
@@ -97,7 +103,7 @@ const MediaSearch = () => {
           <MediaGrid medias={medias} mediaType={mediaType} />
 
           {medias.length > 0 && (
-            <LoadingButton loading={onSearch} onClick={() => setPage(page + 1)}>
+            <LoadingButton loading={onSearch} onClick={onLoadMore}>
               load more
             </LoadingButton>
           )}

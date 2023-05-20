@@ -1,4 +1,5 @@
 import { Typography, useTheme } from "@mui/material";
+import { memo } from "react";
 
 const Logo = () => {
   const theme = useTheme();
@@ -13,4 +14,4 @@ const Logo = () => {
   );
 };
 
-export default Logo;
+export default memo(Logo);

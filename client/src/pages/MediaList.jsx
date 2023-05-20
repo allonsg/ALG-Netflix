@@ -29,12 +29,16 @@ const MediaList = () => {
 
   useEffect(() => {
     dispatch(setAppState(mediaType));
+
     window.scrollTo(0, 0);
   }, [mediaType, dispatch]);
 
   useEffect(() => {
     const getMedias = async () => {
-      if (currPage === 1) dispatch(setGlobalLoading(true));
+      if (currPage === 1) {
+        dispatch(setGlobalLoading(true));
+      }
+
       setMediaLoading(true);
 
       const { response, err } = await mediaApi.getList({
@@ -46,16 +50,22 @@ const MediaList = () => {
       setMediaLoading(false);
       dispatch(setGlobalLoading(false));
 
-      if (err) toast.error(err.message);
+      if (err) {
+        toast.error(err.message);
+      }
       if (response) {
-        if (currPage !== 1) setMedias((m) => [...m, ...response.results]);
-        else setMedias([...response.results]);
+        if (currPage !== 1) {
+          setMedias((prevMedias) => [...prevMedias, ...response.results]);
+        } else {
+          setMedias([...response.results]);
+        }
       }
     };
 
     if (mediaType !== prevMediaType) {
       setCurrCategory(0);
       setCurrPage(1);
+      setMedias([]);
     }
 
     getMedias();
@@ -70,12 +80,13 @@ const MediaList = () => {
 
   const onCategoryChange = (categoryIndex) => {
     if (currCategory === categoryIndex) return;
+
     setMedias([]);
     setCurrPage(1);
     setCurrCategory(categoryIndex);
   };
 
-  const onLoadMore = () => setCurrPage(currPage + 1);
+  const onLoadMore = () => setCurrPage((prevPage) => prevPage + 1);
 
   return (
     <>

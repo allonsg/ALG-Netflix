@@ -4,8 +4,8 @@ import {
   Button,
   Divider,
   Stack,
-  Typography,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
@@ -19,7 +19,6 @@ import TextAvatar from "./TextAvatar";
 
 const ReviewItem = ({ review, onRemoved }) => {
   const { user } = useSelector((state) => state.user);
-
   const [onRequest, setOnRequest] = useState(false);
 
   const onRemove = async () => {
@@ -27,6 +26,7 @@ const ReviewItem = ({ review, onRemoved }) => {
     setOnRequest(true);
 
     const { response, err } = await reviewApi.remove({ reviewId: review.id });
+
     if (err) {
       toast.error(err.message);
     }
@@ -34,6 +34,7 @@ const ReviewItem = ({ review, onRemoved }) => {
       onRemoved(review.id);
     }
   };
+
   return (
     <Box
       sx={{
@@ -45,22 +46,20 @@ const ReviewItem = ({ review, onRemoved }) => {
       }}
     >
       <Stack direction="row" spacing={2}>
-        {/* avatar */}
-        <TextAvatar text={review.user.displayName} />
-        {/* avatar */}
+        <TextAvatar text={review.user?.displayName} />
         <Stack spacing={2} flexGrow={1}>
           <Stack spacing={1}>
             <Typography variant="h6" fontWeight="700">
-              {review.user.displayName}
+              {review.user?.displayName}
             </Typography>
-            <Typography caption="caption">
+            <Typography variant="caption">
               {dayjs(review.createdAt).format("DD-MM-YYYY HH:mm:ss")}
             </Typography>
           </Stack>
           <Typography variant="body1" textAlign="justify">
             {review.content}
           </Typography>
-          {user && user.id === review.user.id && (
+          {user && user.id === review.user?.id && (
             <LoadingButton
               variant="contained"
               startIcon={<DeleteIcon />}
@@ -68,10 +67,7 @@ const ReviewItem = ({ review, onRemoved }) => {
               loading={onRequest}
               onClick={onRemove}
               sx={{
-                postion: {
-                  xs: "relative",
-                  md: "absolute",
-                },
+                position: { xs: "relative", md: "absolute" },
                 right: { xs: 0, md: "10px" },
                 marginTop: { xs: 2, md: 0 },
                 width: "max-content",
@@ -98,8 +94,8 @@ const MediaReview = ({ reviews, media, mediaType }) => {
   const skip = 4;
 
   useEffect(() => {
-    setListReviews([...reviews]);
-    setFilteredReviews([...reviews].splice(0, skip));
+    setListReviews(reviews);
+    setFilteredReviews(reviews.slice(0, skip));
     setReviewCount(reviews.length);
   }, [reviews]);
 
@@ -122,7 +118,6 @@ const MediaReview = ({ reviews, media, mediaType }) => {
     if (err) {
       toast.error(err.message);
     }
-
     if (response) {
       toast.success("Post review success");
 
@@ -135,37 +130,37 @@ const MediaReview = ({ reviews, media, mediaType }) => {
   const onLoadMore = () => {
     setFilteredReviews([
       ...filteredReviews,
-      ...[...listReviews].splice(page * skip, skip),
+      ...listReviews.slice(page * skip, (page + 1) * skip),
     ]);
     setPage(page + 1);
   };
 
   const onRemoved = (id) => {
-    if (listReviews.findIndex((el) => el.id === id) !== -1) {
-      const newListReviews = [...listReviews].filter((el) => el.id !== id);
-      setListReviews(newListReviews);
-      setFilteredReviews([...newListReviews].splice(0, page * skip));
-    } else {
-      setFilteredReviews([...filteredReviews].filter((el) => el.id !== id));
-    }
+    const newListReviews = listReviews.filter((e) => e.id !== id);
 
+    setListReviews(newListReviews);
+    setFilteredReviews(newListReviews.slice(0, page * skip));
     setReviewCount(reviewCount - 1);
+
     toast.success("Remove review success");
   };
+
   return (
     <>
       <Container header={`Reviews (${reviewCount})`}>
         <Stack spacing={4} marginBottom={2}>
-          {filteredReviews.map((item) => (
-            <Box key={item.id}>
-              <ReviewItem review={item} onRemoved={onRemoved} />
-              <Divider
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              />
-            </Box>
-          ))}
+          {filteredReviews.map((item) =>
+            item.user ? (
+              <Box key={item.id}>
+                <ReviewItem review={item} onRemoved={onRemoved} />
+                <Divider
+                  sx={{
+                    display: { xs: "block", md: "none" },
+                  }}
+                />
+              </Box>
+            ) : null
+          )}
           {filteredReviews.length < listReviews.length && (
             <Button onClick={onLoadMore}>load more</Button>
           )}
